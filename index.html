@@ -1,130 +1,395 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوريا كوم | Syria Com</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <title>BASHAR ABOALI | Insane 3D Experience</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --neon-blue: #00f3ff;
-            --neon-gold: #ffb700;
-            --dark-bg: #050814;
+            --gold: #d4af37;
+            --dark: #050507;
+            --text: #f0f0f0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--dark-bg);
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            /* صورة قلعة حلب مع فلتر معتم */
-            background: linear-gradient(rgba(5, 8, 20, 0.85), rgba(5, 8, 20, 0.85)), 
-                        url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Aleppo_Citadel_at_night.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-color: var(--dark); color: var(--text);
+            font-family: 'Manrope', sans-serif; overflow-x: hidden;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
         }
 
-        .main-container {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(10, 18, 42, 0.85);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--neon-blue);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+        /* --- شاشة التحميل السينمائية --- */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark); z-index: 99999; display: flex;
+            justify-content: center; align-items: center; flex-direction: column;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+        .preloader-text {
+            font-family: 'Cinzel', serif; font-size: 3rem; font-weight: 800;
+            letter-spacing: 10px; color: var(--text); overflow: hidden;
+        }
+        .preloader-text span {
+            display: inline-block; animation: textReveal 1.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+            transform: translateY(100%);
+        }
+        .progress-bar {
+            width: 200px; height: 1px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; overflow: hidden;
+        }
+        .progress-bar::after {
+            content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 0;
+            background: var(--gold); animation: loadProgress 2s ease-in-out forwards;
+        }
+        @keyframes textReveal { to { transform: translateY(0); } }
+        @keyframes loadProgress { to { width: 100%; } }
+
+        /* --- المؤشر --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--gold); }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid var(--gold);
+            transition: width 0.3s, height 0.3s, background-color 0.3s, mix-blend-mode 0.3s;
         }
 
-        h1 { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); font-size: 3rem; }
-
-        /* مؤشر سرعة الإنترنت */
-        .speed-gauge {
-            width: 150px; height: 75px;
-            border: 5px solid var(--neon-gold);
-            border-bottom: none;
-            border-radius: 100px 100px 0 0;
-            margin: 20px auto;
-            position: relative;
-            overflow: hidden;
+        /* --- الهيدر --- */
+        header {
+            position: fixed; width: 100%; top: 0; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: rgba(5, 5, 7, 0.1);
+            backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
         }
-        .needle {
-            width: 60%; height: 4px;
-            background: #fff;
-            position: absolute; bottom: 0; left: 0;
-            transform-origin: right center;
-            animation: move-needle 2s infinite alternate ease-in-out;
+        .logo { font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 800; color: var(--text); text-decoration: none; letter-spacing: 3px; display: inline-block;}
+        .logo span { color: var(--gold); }
+        nav ul { display: flex; gap: 40px; list-style: none; }
+        nav ul li a {
+            color: var(--text); text-decoration: none; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 2px; position: relative; display: inline-block;
         }
-        @keyframes move-needle {
-            0% { transform: rotate(180deg); }
-            100% { transform: rotate(0deg); }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .music-btn {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border);
+            color: var(--text); width: 45px; height: 45px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; outline: none; transition: 0.3s;
         }
 
-        .price-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            position: relative; overflow: hidden; perspective: 1000px;
         }
-        .card {
-            background: rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 15px;
-            border-bottom: 3px solid var(--neon-blue);
+        #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.8; }
+        .hero-content { z-index: 2; transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+        .hero-title {
+            font-family: 'Cinzel', serif; font-size: clamp(3rem, 8vw, 8rem);
+            line-height: 1; font-weight: 800; letter-spacing: 5px; margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #777 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            transform: translateZ(80px); text-shadow: 0 30px 60px rgba(0,0,0,0.9);
+        }
+        .hero-subtitle {
+            font-size: 1rem; letter-spacing: 8px; color: var(--gold); text-transform: uppercase;
+            margin-bottom: 50px; transform: translateZ(40px);
         }
 
-        .whatsapp-btn {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: linear-gradient(to right, #25d366, #128c7e);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: 0.3s;
+        /* --- التأثير المغناطيسي للأزرار --- */
+        .magnetic-btn {
+            display: inline-block; padding: 20px 50px; border: 1px solid var(--gold);
+            border-radius: 50px; color: var(--gold); text-decoration: none;
+            font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+            position: relative; overflow: hidden; transform: translateZ(50px);
+            transition: color 0.4s, transform 0.1s; /* Transform سريع للتجاوب مع الماوس */
         }
-        .whatsapp-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #25d366; }
+        .magnetic-btn::before {
+            content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            background: var(--gold); transition: top 0.4s cubic-bezier(0.5, 0, 0, 1); z-index: -1;
+        }
+        .magnetic-btn:hover { color: var(--dark); }
+        .magnetic-btn:hover::before { top: 0; }
+
+        /* --- قسم الأعمال والإضاءة التتبعية (Spotlight) --- */
+        .portfolio-section { padding: 150px 5%; max-width: 1600px; margin: 0 auto; position: relative; z-index: 5; }
+        .section-title { font-family: 'Cinzel', serif; font-size: 3rem; margin-bottom: 60px; text-align: center; }
+
+        /* حاوية الكروت لتأثير الإضاءة */
+        .cards-container {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 400px); gap: 30px;
+        }
+
+        .bento-item {
+            position: relative; border-radius: 20px;
+            background: rgba(25, 25, 25, 0.4); 
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        /* تأثير الإضاءة الذكية للحدود */
+        .bento-item::before {
+            content: ""; position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+            border-radius: 21px; background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(212, 175, 55, 0.4), transparent 40%);
+            z-index: -1; opacity: 0; transition: opacity 0.3s;
+        }
+        .cards-container:hover .bento-item::before { opacity: 1; }
+
+        .bento-inner {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            border-radius: 20px; overflow: hidden; transform: translateZ(0);
+            background: #111;
+        }
+
+        /* RGB Glitch Effect on Image Hover */
+        .bento-inner img {
+            width: 100%; height: 100%; object-fit: cover; opacity: 0.5;
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.4s;
+            transform-origin: center;
+        }
+        .bento-item:hover .bento-inner img {
+            transform: scale(1.15); opacity: 0.8;
+            /* تأثير الـ RGB المدمج */
+            filter: drop-shadow(4px 0px 0px rgba(255,0,0,0.5)) drop-shadow(-4px 0px 0px rgba(0,255,255,0.5));
+        }
+        
+        .bento-info {
+            position: absolute; bottom: 30px; left: 30px;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
+            padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+            transform: translateZ(70px); transition: all 0.4s ease; pointer-events: none;
+        }
+        .bento-info h3 { font-family: 'Cinzel', serif; font-size: 1.5rem; color: var(--gold); }
+        .bento-info p { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+
+        .item-large { grid-column: span 2; }
+
+        /* --- Scroll Reveal Classes --- */
+        .reveal { opacity: 0; transform: translateY(80px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        footer { text-align: center; padding: 150px 20px 100px; font-family: 'Cinzel', serif; position: relative; z-index: 5; }
+        footer h2 { font-size: clamp(3rem, 6vw, 6rem); margin-bottom: 40px; transform: translateZ(30px); }
+
     </style>
 </head>
 <body>
 
-<div class="main-container">
-    <h1>SYRIA COM</h1>
-    <p>سرعة لا تضاهى في مدينة حلب</p>
-
-    <div class="speed-gauge">
-        <div class="needle"></div>
-    </div>
-    <p>سرعة اتصال نشطة حالياً</p>
-
-    <div class="price-grid">
-        <div class="card">
-            <h3>باقة المبتدئين</h3>
-            <h2 style="color: var(--neon-blue);">2.5 ميغا</h2>
-        </div>
-        <div class="card">
-            <h3>باقة العائلة</h3>
-            <h2 style="color: var(--neon-blue);">5.5 ميغا</h2>
-        </div>
-        <div class="card" style="border-bottom-color: var(--neon-gold);">
-            <h3>باقة الأساطير</h3>
-            <h2 style="color: var(--neon-gold);">10 ميغا</h2>
-        </div>
+    <!-- شاشة التحميل -->
+    <div id="preloader">
+        <div class="preloader-text"><span>BASHAR</span></div>
+        <div class="progress-bar"></div>
     </div>
 
-    <a href="https://wa.me/905383422263" class="whatsapp-btn">
-        <i class="fa-brands fa-whatsapp"></i> تواصل معنا عبر الواتساب
-    </a>
-</div>
+    <!-- موسيقى -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://dl.dropboxusercontent.com/scl/fi/ijcu0cql1qjhm05cjtfva/vSqN7UPS6SGTSg0VEpok-VZY3_wV8GkE.m4a?rlkey=vsipmo4ibpkkgeybv2si5n63n" type="audio/mp4">
+    </audio>
 
+    <!-- المؤشر -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <header class="reveal">
+        <a href="#" class="logo magnetic">BASHAR<span>.</span></a>
+        <nav>
+            <ul>
+                <li><a href="#work" class="magnetic">Work</a></li>
+                <li><a href="#about" class="magnetic">Expertise</a></li>
+                <li><a href="#contact" class="magnetic">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-right">
+            <button class="music-btn magnetic" onclick="toggleMusic()">
+                <i class="fas fa-play" id="music-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-content reveal" id="hero-content">
+            <h1 class="hero-title">VISUAL MASTERPIECE</h1>
+            <p class="hero-subtitle">Creative Director & Digital Artist</p>
+            <a href="#work" class="magnetic-btn magnetic">Explore World</a>
+        </div>
+    </section>
+
+    <section class="portfolio-section" id="work">
+        <h2 class="section-title reveal">SELECTED ARCHIVE</h2>
+        <!-- أضفنا آيدي الحاوية لبرمجة الإضاءة -->
+        <div class="cards-container" id="cards-container">
+            <div class="bento-item item-large reveal" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <div class="bento-inner"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1000&auto=format" alt="Project 1"></div>
+                <div class="bento-info"><h3>Aurora Elegance</h3><p>Brand Identity</p></div>
+            </div>
+            <div class="bento-item reveal" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <div class="bento-inner"><img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format" alt="Project 2"></div>
+                <div class="bento-info"><h3>Nuclear Concept</h3><p>UI Architecture</p></div>
+            </div>
+            <div class="bento-item reveal" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <div class="bento-inner"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=800&auto=format" alt="Project 3"></div>
+                <div class="bento-info"><h3>Dark Matter</h3><p>Digital Art</p></div>
+            </div>
+            <div class="bento-item item-large reveal" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2">
+                <div class="bento-inner"><img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?w=1000&auto=format" alt="Project 4"></div>
+                <div class="bento-info"><h3>Future Vision</h3><p>Web Experience</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2 class="reveal">LET'S TALK</h2>
+        <a href="mailto:contact@bashar.com" class="magnetic-btn magnetic reveal">START A PROJECT</a>
+    </footer>
+
+    <!-- مكتبة Vanilla Tilt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    
+    <script>
+        // 1. شاشة التحميل (Preloader)
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                preloader.style.transform = 'translateY(-100%)';
+                setTimeout(() => preloader.style.display = 'none', 1000);
+            }, 2000); // الشاشة تبقى لثانيتين للعرض
+        });
+
+        // 2. المؤشر المخصص وانعكاس الألوان (Blend Mode)
+        const cursorDot = document.getElementById("cursor-dot");
+        const cursorOutline = document.getElementById("cursor-outline");
+        window.addEventListener("mousemove", (e) => {
+            cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
+            cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 300, fill: "forwards" });
+        });
+
+        // 3. الفيزياء المغناطيسية للأزرار (Magnetic Effect)
+        const magnetics = document.querySelectorAll(".magnetic");
+        magnetics.forEach(btn => {
+            btn.addEventListener("mousemove", function(e) {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // تحريك الزر نحو الماوس بقوة خفيفة
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) translateZ(50px)`;
+                
+                // تكبير المؤشر
+                cursorOutline.style.width = "60px"; cursorOutline.style.height = "60px";
+                cursorOutline.style.mixBlendMode = "difference";
+                cursorOutline.style.backgroundColor = "white";
+                cursorOutline.style.border = "none";
+            });
+            
+            btn.addEventListener("mouseleave", function() {
+                // عودة الزر لمكانه كالنابض
+                btn.style.transform = `translate(0px, 0px) translateZ(50px)`;
+                
+                // عودة المؤشر
+                cursorOutline.style.width = "40px"; cursorOutline.style.height = "40px";
+                cursorOutline.style.mixBlendMode = "normal";
+                cursorOutline.style.backgroundColor = "transparent";
+                cursorOutline.style.border = "1px solid var(--gold)";
+            });
+        });
+
+        // 4. إضاءة ذكية حول الكروت (Spotlight Effect)
+        document.getElementById("cards-container").onmousemove = e => {
+            for(const card of document.getElementsByClassName("bento-item")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+                // تمرير موقع الماوس إلى CSS
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            }
+        };
+
+        // 5. ظهور العناصر عند التمرير (Scroll Reveal)
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target); // تشغيل الحركة مرة واحدة فقط
+                }
+            });
+        }, { threshold: 0.1 }); // يبدأ الظهور عندما يظهر 10% من العنصر
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 6. الموسيقى
+        const audio = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); musicIcon.className = "fas fa-pause"; } 
+            else { audio.pause(); musicIcon.className = "fas fa-play"; }
+        }
+
+        // 7. تأثير 3D للعنوان (Hero Parallax)
+        const heroContent = document.getElementById('hero-content');
+        document.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 50; 
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 50; 
+            heroContent.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+
+        // 8. الخلفية 3D (Particle Canvas)
+        const canvas = document.getElementById("hero-canvas");
+        const ctx = canvas.getContext("2d");
+        let particlesArray;
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.baseZ = Math.random() * 2;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * this.baseZ, 0, Math.PI * 2, false);
+                ctx.fillStyle = '#d4af37'; ctx.globalAlpha = this.baseZ / 2;
+                ctx.fill(); ctx.globalAlpha = 1;
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                
+                let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius) { this.x -= dx/20; this.y -= dy/20; }
+                this.x += this.directionX * this.baseZ; this.y += this.directionY * this.baseZ;
+                this.draw();
+            }
+        }
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size*2) - size*2) + size*2);
+                let y = (Math.random() * ((innerHeight - size*2) - size*2) + size*2);
+                particlesArray.push(new Particle(x, y, (Math.random() * 2) - 1, (Math.random() * 2) - 1, size));
+            }
+        }
+        function animate() {
+            requestAnimationFrame(animate); ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) particlesArray[i].update();
+        }
+        init(); animate();
+        window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; init(); });
+    </script>
 </body>
 </html>
